@@ -7,6 +7,7 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link, useNavigate } from "react-router-dom";
 
 function NavList() {
   return (
@@ -81,20 +82,22 @@ export function Nav() {
     };
   }, []);
 
+  const navigate = useNavigate()
+
   return (
     <Navbar className="mx-auto px-6 py-3" fullWidth>
       <div className="flex items-center justify-between text-blue-gray-900">
         <Typography
-          as="a"
-          href="#"
+          as={Link}
+          to="/"
           variant="h6"
           className="mr-4 cursor-pointer py-1.5"
         >
-          Material Tailwind
+          Product Searching
         </Typography>
         <div className="hidden lg:flex items-center gap-10">
           <NavList />
-          <Button>Login</Button>
+          <Button onClick={()=> navigate("/login")}>Login</Button>
         </div>
         <IconButton
           variant="text"
@@ -111,7 +114,7 @@ export function Nav() {
       </div>
       <Collapse open={openNav}>
         <NavList />
-        <Button>Login</Button>
+        <Button onClick={()=> navigate("/login")}>Login</Button>
       </Collapse>
     </Navbar>
   );
