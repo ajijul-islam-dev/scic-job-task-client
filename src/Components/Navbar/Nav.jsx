@@ -4,9 +4,10 @@ import {
   Collapse,
   Typography,
   IconButton,
+  Button,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
- 
+
 function NavList() {
   return (
     <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -16,7 +17,10 @@ function NavList() {
         color="blue-gray"
         className="p-1 font-medium"
       >
-        <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+        <a
+          href="#"
+          className="flex items-center hover:text-blue-500 transition-colors"
+        >
           Pages
         </a>
       </Typography>
@@ -26,7 +30,10 @@ function NavList() {
         color="blue-gray"
         className="p-1 font-medium"
       >
-        <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+        <a
+          href="#"
+          className="flex items-center hover:text-blue-500 transition-colors"
+        >
           Account
         </a>
       </Typography>
@@ -36,7 +43,10 @@ function NavList() {
         color="blue-gray"
         className="p-1 font-medium"
       >
-        <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+        <a
+          href="#"
+          className="flex items-center hover:text-blue-500 transition-colors"
+        >
           Blocks
         </a>
       </Typography>
@@ -46,28 +56,31 @@ function NavList() {
         color="blue-gray"
         className="p-1 font-medium"
       >
-        <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+        <a
+          href="#"
+          className="flex items-center hover:text-blue-500 transition-colors"
+        >
           Docs
         </a>
       </Typography>
     </ul>
   );
 }
- 
+
 export function Nav() {
   const [openNav, setOpenNav] = React.useState(false);
- 
+
   const handleWindowResize = () =>
     window.innerWidth >= 960 && setOpenNav(false);
- 
+
   React.useEffect(() => {
     window.addEventListener("resize", handleWindowResize);
- 
+
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
- 
+
   return (
     <Navbar className="mx-auto px-6 py-3" fullWidth>
       <div className="flex items-center justify-between text-blue-gray-900">
@@ -79,8 +92,9 @@ export function Nav() {
         >
           Material Tailwind
         </Typography>
-        <div className="hidden lg:block">
+        <div className="hidden lg:flex items-center gap-10">
           <NavList />
+          <Button>Login</Button>
         </div>
         <IconButton
           variant="text"
@@ -97,6 +111,7 @@ export function Nav() {
       </div>
       <Collapse open={openNav}>
         <NavList />
+        <Button>Login</Button>
       </Collapse>
     </Navbar>
   );
