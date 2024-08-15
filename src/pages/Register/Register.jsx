@@ -6,6 +6,7 @@ import {
     Typography,
   } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import GoogleLogin from "../../Components/GoogleLogin/GoogleLogin";
    
   export default function Register() {
     return (
@@ -79,6 +80,7 @@ import { Link } from "react-router-dom";
             <Link to="/login" className="font-medium text-gray-900">
               Login
             </Link>
+            <GoogleLogin/>
           </Typography>
         </form>
       </Card>

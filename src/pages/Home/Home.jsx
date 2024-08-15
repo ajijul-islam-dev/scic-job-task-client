@@ -1,10 +1,7 @@
 import { Input, Option, Select } from "@material-tailwind/react";
-import React, { useContext } from "react";
-import { AuthContext } from "../../providers/AuthProvider";
+
 
 const Home = () => {
-    const {user} = useContext(AuthContext)
-    console.log(user);
   return (
     <div>
         <h2 className="text-2xl font-semibold text-center mt-32 mb-14">Search Products</h2>
