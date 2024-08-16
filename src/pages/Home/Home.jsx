@@ -1,14 +1,15 @@
 import { Input, Option, Select } from "@material-tailwind/react";
-
+import ProductCard from "../../Components/ProductCard/ProductCard";
 
 const Home = () => {
   return (
     <div>
-        <h2 className="text-2xl font-semibold text-center mt-32 mb-14">Search Products</h2>
+      <h2 className="text-2xl font-semibold text-center mt-32 mb-14">
+        Search Products
+      </h2>
       <div className="flex items-center justify-between gap-20  mx-20">
         <div className="w-full">
           <Input
-          
             label="Input With Icon"
             icon={
               <svg
@@ -62,6 +63,9 @@ const Home = () => {
             </Option>
           </Select>
         </div>
+      </div>
+      <div className="mx-20 mt-5 grid grid-cols-2 md:grid-cols-4">
+        <ProductCard/>
       </div>
     </div>
   );
