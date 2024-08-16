@@ -2,6 +2,7 @@ import {IconButton } from "@material-tailwind/react";
 import { useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../providers/AuthProvider";
+import { toast } from "react-toastify";
 
 const GoogleLogin = () => {
     const {googleSignIn} = useContext(AuthContext)
@@ -10,9 +11,10 @@ const GoogleLogin = () => {
         googleSignIn()
         .then(result => {
             console.log(result);
+            toast("Logged In")
         })
         .catch(error=>{
-            console.log(error.message);
+          toast.error(error.message)
         })
     }
   return (
