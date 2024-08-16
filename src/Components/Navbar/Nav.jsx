@@ -85,7 +85,7 @@ export function Nav() {
   const navigate = useNavigate()
 
   return (
-    <Navbar className="mx-auto px-6 py-3" fullWidth>
+    <Navbar className="mx-auto px-6 py-3 fixed top-0 left-0 z-50" fullWidth>
       <div className="flex items-center justify-between text-blue-gray-900">
         <Typography
           as={Link}
