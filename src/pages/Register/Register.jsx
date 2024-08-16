@@ -5,38 +5,47 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GoogleLogin from "../../Components/GoogleLogin/GoogleLogin";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import { toast } from "react-toastify";
-import { updateProfile } from "firebase/auth";
-import auth from "../../firebase/firebase.config";
+import { signOut, updateProfile } from "firebase/auth";
+import Auth from "../../firebase/firebase.config";
 
 export default function Register() {
   const { createUserWithEmail } = useContext(AuthContext);
 
-  const handleRegister = (e) => {
+  const navigate = useNavigate();
+
+  const handleRegister = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
     const name = e.target.name.value;
 
-    createUserWithEmail(email, password)
+    await createUserWithEmail(email, password)
       .then((result) => {
         updateProfile(auth.currentUser, { displayName: name })
-          .then((result) => {
-            toast.success("Account created successfully");
-            
+          .then(() => {
+            signOut(Auth)
+              .then((result) => {
+                toast.success("Account created successfully");
+              })
+              .catch((error) => {
+                toast.error(error.message);
+              });
+            navigate("/login");
           })
           .catch((error) => {
-            toast.error(error.messge);
+            toast.error(error.message); // Fixed typo here
           });
       })
       .catch((error) => {
-        toast.error(error.messge);
+        toast.error(error.message); // Fixed typo here
       });
   };
+
   return (
     <Card
       className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96 mx-auto"
