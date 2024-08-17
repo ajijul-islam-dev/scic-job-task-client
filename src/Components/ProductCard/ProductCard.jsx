@@ -10,7 +10,7 @@ import {
 export default function ProductCard({ product }) {
   return (
     <Card className="">
-      <CardHeader shadow={false} floated={false} className="h-60">
+      <CardHeader shadow={false} floated={false} className="h-40">
         <img
           src={product.image}
           alt="card-image"

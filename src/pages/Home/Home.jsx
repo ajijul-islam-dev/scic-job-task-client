@@ -2,6 +2,7 @@ import { Input, Option, Select } from "@material-tailwind/react";
 import ProductCard from "../../Components/ProductCard/ProductCard";
 import React, { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
+import ReactPaginate from "react-paginate";
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -35,13 +36,23 @@ const Home = () => {
     );
   }, [brandName, minPrice, maxPrice, sortBy, categoryName]);
 
-  console.log(products);
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 10;
+
+  const endOffset = itemOffset + itemsPerPage;
+  const currentItems = products?.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(products?.length / itemsPerPage);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % products?.length;
+    setItemOffset(newOffset);
+  };
   return (
     <div>
       <h2 className="text-2xl font-semibold text-center mt-32 mb-14">
         Search Products
       </h2>
-      <div className="flex flex-col md:flex-row items-center justify-between gap-5 md:gap-10  md:mx-20">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-5 md:gap-10 mx-3 md:mx-20">
         <div className="w-full">
           <Input
             onChange={(e) => setBrandName(e.target.value)}
@@ -65,16 +76,15 @@ const Home = () => {
           />
         </div>
         <div className="flex flex-col md:flex-row gap-3">
-        <div className="w-full">
-        <Input
-            onChange={(e) => setMinPrice(e.target.value)}
-            type="number"
-            placeholder="min price"
-            name="minPrice"
-            label="min price"
-           
-          />
-        </div>
+          <div className="w-full">
+            <Input
+              onChange={(e) => setMinPrice(e.target.value)}
+              type="number"
+              placeholder="min price"
+              name="minPrice"
+              label="min price"
+            />
+          </div>
           <Input
             onChange={(e) => setMaxPrice(e.target.value)}
             type="number"
@@ -127,9 +137,9 @@ const Home = () => {
           </Select>
         </div>
       </div>
-      {products?.length > 0 ? (
-        <div className="mx-20 mt-16 grid grid-cols-2 md:grid-cols-4 gap-5">
-          {products?.map((product, i) => {
+      {currentItems?.length > 0 ? (
+        <div className="md:mx-20  mx-2 mt-16 grid grid-cols-1 md:grid-cols-4 gap-3">
+          {currentItems?.map((product, i) => {
             return <ProductCard key={i} product={product} />;
           })}
         </div>
@@ -138,6 +148,29 @@ const Home = () => {
           <p className="text-2xl font-bold text-gray-500">Nothing to Show 😒</p>
         </div>
       )}
+
+      <div className="w-full mx-auto text-center block">
+        <ReactPaginate
+          nextLabel="Next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={2}
+          pageCount={pageCount}
+          previousLabel="< Previous"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination w-full flex justify-center mt-8"
+          activeClassName="active"
+          renderOnZeroPageCount={null}
+        />
+      </div>
     </div>
   );
 };
