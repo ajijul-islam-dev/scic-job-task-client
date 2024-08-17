@@ -1,15 +1,50 @@
 import { Input, Option, Select } from "@material-tailwind/react";
 import ProductCard from "../../Components/ProductCard/ProductCard";
+import React, { useEffect, useState } from "react";
+import useAxios from "../../hooks/useAxios";
 
 const Home = () => {
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const Axios = useAxios();
+
+  const [brandName, setBrandName] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [sortBy, setSortBy] = useState("");
+  const [categoryName, setCategoryname] = useState("");
+
+  const params = new URLSearchParams();
+
+  if (brandName) params.append("brandName", brandName);
+  if (minPrice) params.append("minPrice", minPrice);
+  if (maxPrice) params.append("maxPrice", maxPrice);
+  if (sortBy) params.append("sortBy", sortBy);
+  if (categoryName) params.append("categoryName", categoryName);
+
+  // fetch all categoris from database
+  useEffect(() => {
+    Axios.get("/categories").then((res) => {
+      setCategories(["All", ...res.data.data]);
+    });
+  }, []);
+  // get product by filtering
+  useEffect(() => {
+    Axios.get(`/products?${params.toString()}`).then((res) =>
+      setProducts(res.data.data)
+    );
+  }, [brandName, minPrice, maxPrice, sortBy, categoryName]);
+
+  console.log(products);
   return (
     <div>
       <h2 className="text-2xl font-semibold text-center mt-32 mb-14">
         Search Products
       </h2>
-      <div className="flex items-center justify-between gap-20  mx-20">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-5 md:gap-10  md:mx-20">
         <div className="w-full">
           <Input
+            onChange={(e) => setBrandName(e.target.value)}
             label="Input With Icon"
             icon={
               <svg
@@ -29,10 +64,28 @@ const Home = () => {
             }
           />
         </div>
-        <div className="flex gap-5">
+        <div className="flex flex-col md:flex-row gap-3">
+        <div className="w-full">
+        <Input
+            onChange={(e) => setMinPrice(e.target.value)}
+            type="number"
+            placeholder="min price"
+            name="minPrice"
+            label="min price"
+           
+          />
+        </div>
+          <Input
+            onChange={(e) => setMaxPrice(e.target.value)}
+            type="number"
+            placeholder="max price"
+            name="maxPrice"
+            label="max price"
+          />
           <Select
+            onChange={(e) => setSortBy(e)}
             size="md"
-            label="Select Country"
+            label="Sort By"
             selected={(element) =>
               element &&
               React.cloneElement(element, {
@@ -42,13 +95,17 @@ const Home = () => {
               })
             }
           >
-            <Option key={name} value={name} className="flex items-center gap-2">
-              Bangladesh
+            <Option value="price" className="flex items-center gap-2">
+              Price
+            </Option>
+            <Option value="date" className="flex items-center gap-2">
+              Date
             </Option>
           </Select>
           <Select
+            onChange={(e) => setCategoryname(e)}
             size="md"
-            label="Select Country"
+            label="Categorize By"
             selected={(element) =>
               element &&
               React.cloneElement(element, {
@@ -58,15 +115,29 @@ const Home = () => {
               })
             }
           >
-            <Option key={name} value={name} className="flex items-center gap-2">
-              Bangladesh
-            </Option>
+            {categories?.map((category, i) => (
+              <Option
+                key={i}
+                value={category == "All" ? "" : category}
+                className="flex items-center gap-2"
+              >
+                {category}
+              </Option>
+            ))}
           </Select>
         </div>
       </div>
-      <div className="mx-20 mt-5 grid grid-cols-2 md:grid-cols-4">
-        <ProductCard/>
-      </div>
+      {products?.length > 0 ? (
+        <div className="mx-20 mt-16 grid grid-cols-2 md:grid-cols-4 gap-5">
+          {products?.map((product, i) => {
+            return <ProductCard key={i} product={product} />;
+          })}
+        </div>
+      ) : (
+        <div className="w-full h-[20vh] flex items-center justify-center">
+          <p className="text-2xl font-bold text-gray-500">Nothing to Show 😒</p>
+        </div>
+      )}
     </div>
   );
 };

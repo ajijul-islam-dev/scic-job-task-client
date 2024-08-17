@@ -6,7 +6,9 @@ const Main = () => {
     return (
         <div>
             <Nav/>
+            <div className="my-32">
             <Outlet/>
+            </div>
             <Footer/>
         </div>
     );
